@@ -14,6 +14,6 @@ cover the colplete functionality of the GD librrary.
 * Fortran-2008 compatible Fortran compiler (tested with gfortran 11)
 * libGD
 
-##Compiling
+## Compiling
 Edit the ```Makefile``` such that ist fits both your Fortran environment and your installation of the GD Library.
 The library is then created (along with an example application) by invoking the ```make``` command.
