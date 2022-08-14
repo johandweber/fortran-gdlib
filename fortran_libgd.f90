@@ -1,6 +1,14 @@
 module fortran_libgd
   use iso_c_binding
-  implicit none  
+  implicit none
+
+  integer(c_int), parameter :: gdArc    = 0_c_int,&
+                               gdPie    = 0_c_int,&
+                               gdChord  = 1_c_int, &
+                               gdNoFill = 2_c_int,&
+                               gdEdged  = 4_c_int
+  
+  
   interface
 
      function gd_fopen(filename, modus) bind(c, name = 'fopen')
@@ -107,6 +115,14 @@ module fortran_libgd
        type(c_ptr)   , value :: imagepointer
        integer(c_int), value :: mx, my, w, h, a1, a2, color
      end subroutine gdImageArc
+
+    subroutine gdImageFilledArc (imagepointer, mx, my, w, h, a1, a2, color, s) bind(c, name = 'gdImageFilledArc')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr)   , value :: imagepointer
+       integer(c_int), value :: mx, my, w, h, a1, a2, color,s 
+     end subroutine gdImageFilledArc
+     
 
      subroutine gdImageFill (imagepointer, x,y , color) bind(c, name = 'gdImageFill')
        import c_int, c_ptr

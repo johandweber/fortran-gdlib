@@ -53,6 +53,9 @@ program test_fortran_gd
   call gdImageEllipse (im, 320_c_int, 30_c_int, 40_c_int, 40_c_int, cyan)
   call gdImageFilledEllipse (im, 320_c_int, 610_c_int, 40_c_int, 40_c_int, magenta)
   call gdImageArc (im, 320_c_int, 320_c_int, 100_c_int, 100_c_int, 0_c_int, 90_c_int, grey)
+  call gdImageFilledArc (im, 320_c_int, 320_c_int, 100_c_int, 100_c_int, 90_c_int, 180_c_int, blue, gdEdged)
+  call gdImageFilledArc (im, 320_c_int, 320_c_int, 100_c_int, 100_c_int, 180_c_int, 270_c_int, orange, gdArc)
+  call gdImageFilledArc (im, 320_c_int, 320_c_int, 100_c_int, 100_c_int, 270_c_int, 360_c_int, green, gdChord)
 
   call gdImageLine (im, 320_c_int, 100_c_int, 340_c_int, 180_c_int, white)
   call gdImageLine (im, 320_c_int, 100_c_int, 300_c_int, 180_c_int, white)
@@ -63,7 +66,7 @@ program test_fortran_gd
   call gdImageString(im, large, 500, 270, 'ipsum'//c_null_char, orange)
   call gdImageString(im, mediumbold, 500, 290, 'sit'//c_null_char, yellow)
   call gdImageString(im, small, 500, 310, 'amet,'//c_null_char, green)
-  call gdImageString(im, tiny, 500, 330, 'conßetetur'//c_null_char, blue)
+  call gdImageString(im, tiny, 500, 330, 'consetetur'//c_null_char, blue)
   
   
 
