@@ -63,6 +63,69 @@ module fortran_libgd
        integer(c_int), value :: x1, y1, x2, y2, color
      end subroutine gdImageLine
 
+    subroutine gdImageDashedLine (imagepointer, x1, y1, x2, y2, color) bind(c, name = 'gdImageDashedLine')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr)   , value :: imagepointer
+       integer(c_int), value :: x1, y1, x2, y2, color
+     end subroutine gdImageDashedLine
+     
+    subroutine gdImageRectangle (imagepointer, x1, y1, x2, y2, color) bind(c, name = 'gdImageRectangle')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr)   , value :: imagepointer
+       integer(c_int), value :: x1, y1, x2, y2, color
+     end subroutine gdImageRectangle
+
+      
+    subroutine gdImageFilledRectangle (imagepointer, x1, y1, x2, y2, color) bind(c, name = 'gdImageFilledRectangle')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr)   , value :: imagepointer
+       integer(c_int), value :: x1, y1, x2, y2, color
+     end subroutine gdImageFilledRectangle
+    
+    
+    subroutine gdImageEllipse (imagepointer, mx, my, w, h, color) bind(c, name = 'gdImageEllipse')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr)   , value :: imagepointer
+       integer(c_int), value :: mx, my, w, h, color
+     end subroutine gdImageEllipse
+
+      
+    subroutine gdImageFilledEllipse (imagepointer, mx, my, w, h, color) bind(c, name = 'gdImageFilledEllipse')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr)   , value :: imagepointer
+       integer(c_int), value :: mx, my, w, h, color
+     end subroutine gdImageFilledEllipse
+
+    subroutine gdImageArc (imagepointer, mx, my, w, h, a1, a2, color) bind(c, name = 'gdImageArc')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr)   , value :: imagepointer
+       integer(c_int), value :: mx, my, w, h, a1, a2, color
+     end subroutine gdImageArc
+
+     subroutine gdImageFill (imagepointer, x,y , color) bind(c, name = 'gdImageFill')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr)   , value :: imagepointer
+       integer(c_int), value :: x,y , color
+     end subroutine gdImageFill
+    
+
+!!$     function gdImageString(filename, modus) bind(c, name = 'gdImageString')
+!!$       import::  c_ptr, c_char
+!!$       implicit none
+!!$       type(c_ptr) :: gd_fopen
+!!$       character(kind= c_char),   intent(in) :: filename(*), modus(*) 
+!!$     end function gdImageString
+
+     
+  
+     
      subroutine gdImagePng (imagepointer, filepointer) bind(c, name= 'gdImagePng')
        import c_ptr
        implicit none
@@ -70,6 +133,7 @@ module fortran_libgd
        type(c_ptr), value :: filepointer
      end subroutine gdImagePng
 
+     
      subroutine gdImageJpeg (imagepointer, filepointer, quality) bind(c, name= 'gdImageJpeg')
        import c_ptr, c_int
        implicit none

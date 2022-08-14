@@ -16,7 +16,8 @@ program test_fortran_gd
   type (c_ptr)  :: pngout, jpegout
 
   ! Declare color indexes  
-  integer(c_int):: white, black, yellow, red, blue, magenta, cyan
+  integer(c_int):: white, black, yellow, red, blue, magenta, cyan,&
+                   grey, orange
 
   integer(c_int):: closestatus
 
@@ -31,6 +32,9 @@ program test_fortran_gd
   blue    =  gdImageColorAllocate(im, 0_c_int, 0_c_int, 255_c_int)
   cyan    =  gdImageColorAllocate(im, 0_c_int, 255_c_int, 255_c_int)
   magenta =  gdImageColorAllocate(im, 255_c_int, 0_c_int, 255_c_int)
+  grey    =  gdImageColorAllocate(im, 127_c_int, 127_c_int, 127_c_int)
+  orange  =  gdImageColorAllocate(im, 255_c_int, 127_c_int, 0_c_int)
+  
   
   call gdImageLine (im, 0_c_int, 0_c_int, 639_c_int, 639_c_int, white)
   call gdImageDashedLine (im, 0_c_int, 630_c_int, 639_c_int, 0_c_int, yellow)
@@ -38,6 +42,12 @@ program test_fortran_gd
   call gdImageFilledRectangle (im, 630_c_int, 300_c_int, 590_c_int, 340_c_int, blue)
   call gdImageEllipse (im, 320_c_int, 30_c_int, 40_c_int, 40_c_int, cyan)
   call gdImageFilledEllipse (im, 320_c_int, 610_c_int, 40_c_int, 40_c_int, magenta)
+  call gdImageArc (im, 320_c_int, 320_c_int, 100_c_int, 100_c_int, 0_c_int, 90_c_int, grey)
+
+  call gdImageLine (im, 320_c_int, 100_c_int, 340_c_int, 180_c_int, white)
+  call gdImageLine (im, 320_c_int, 100_c_int, 300_c_int, 180_c_int, white)
+  call gdImageLine (im, 300_c_int, 180_c_int, 340_c_int, 180_c_int, white)
+  call gdImageFill (im, 320_c_int, 110_c_int, orange)
   
 
   pngout = gd_fopen("test_extended.png"//c_null_char, "wb"//c_null_char)
