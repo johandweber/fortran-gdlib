@@ -114,19 +114,19 @@ module fortran_libgd
        type(c_ptr)   , value :: imagepointer
        integer(c_int), value :: x,y , color
      end subroutine gdImageFill
-    
 
-!!$     function gdImageString(filename, modus) bind(c, name = 'gdImageString')
-!!$       import::  c_ptr, c_char
-!!$       implicit none
-!!$       type(c_ptr) :: gd_fopen
-!!$       character(kind= c_char),   intent(in) :: filename(*), modus(*) 
-!!$     end function gdImageString
-
+     subroutine gdImageString (imagepointer, fontpointer, x,y, s, color)&
+          bind(c, name='gdImageString')
+       import c_int, c_char, c_ptr
+       implicit none
+       type(c_ptr), value        :: imagepointer
+       type(c_ptr), value        :: fontpointer
+       integer(c_int),value      :: x,y
+       character(kind= c_char),   intent(in) :: s(*)       
+       integer(c_int), value     :: color
+     end subroutine gdImageString
      
-  
-     
-     subroutine gdImagePng (imagepointer, filepointer) bind(c, name= 'gdImagePng')
+     subroutine gdImagePng (imagepointer, filepointer) bind(c, name = 'gdImagePng')
        import c_ptr
        implicit none
        type(c_ptr), value :: imagepointer
@@ -134,14 +134,46 @@ module fortran_libgd
      end subroutine gdImagePng
 
      
-     subroutine gdImageJpeg (imagepointer, filepointer, quality) bind(c, name= 'gdImageJpeg')
+     subroutine gdImageJpeg (imagepointer, filepointer, quality) bind(c, name = 'gdImageJpeg')
        import c_ptr, c_int
        implicit none
        type(c_ptr), value :: imagepointer
        type(c_ptr), value :: filepointer
        integer(c_int), value :: quality
      end subroutine gdImageJpeg
-        
+
+     function gdFontGetGiant() bind(c, name = 'gdFontGetGiant')
+       import c_ptr
+       implicit none
+       type(c_ptr) :: gdFontGetGiant
+     end function gdFontGetGiant
+
+     function gdFontGetLarge() bind(c, name = 'gdFontGetLarge')
+       import c_ptr
+       implicit none
+       type(c_ptr) :: gdFontGetLarge
+     end function gdFontGetLarge
+     
+     function gdFontGetMediumBold() bind(c, name = 'gdFontGetMediumBold')
+       import c_ptr
+       implicit none
+       type(c_ptr) :: gdFontGetMediumBold
+     end function gdFontGetMediumBold
+    
+     function gdFontGetSmall() bind(c, name = 'gdFontGetSmall')
+       import c_ptr
+       implicit none
+       type(c_ptr) :: gdFontGetSmall
+     end function gdFontGetSmall
+    
+     function gdFontGetTiny() bind(c, name = 'gdFontGetTiny')
+       import c_ptr
+       implicit none
+       type(c_ptr) :: gdFontGetTiny
+     end function gdFontGetTiny
+
+     
+     
   end interface
   
 end module fortran_libgd
