@@ -3,12 +3,19 @@ Fortran binding for the GD graphics library [https://libgd.github.io/](https://l
 
 ## Currents status and aims
 This is a Fortran binding for the GD graphics library.
-Currently it is in a very early state and only able to 
-compile the very first example of the documentation from
-[https://libgd.github.io/manuals/2.3.3/files/preamble-txt.html](https://libgd.github.io/manuals/2.3.3/files/preamble-txt.html), 
-which has been "translated"to Fortran and a very small subset of additional functions.
+Currently it is in a very early state and only supports 
+a small small subset of the library.
 My plan is to gradually add more functions, but it is unlikely that the wrapper will ever
-cover the colplete functionality of the GD librrary.
+cover the complete functionality of the GD librrary.
+
+If you miss a certainn functionality contact me or -- even better -- add the functionality
+and open a pull request.
+
+Currently supported subroutines functions:
+
+*gd_fclose
+*gd_fopen
+
 
 ## Requirements
 * Fortran-2008 compatible Fortran compiler (tested with gfortran 11)
