@@ -7,8 +7,6 @@ module fortran_libgd
                                gdChord  = 1_c_int, &
                                gdNoFill = 2_c_int,&
                                gdEdged  = 4_c_int
-  
-  
   interface
 
      function gd_fopen(filename, modus) bind(c, name = 'fopen')
@@ -77,6 +75,8 @@ module fortran_libgd
        type(c_ptr)   , value :: imagepointer
        integer(c_int), value :: x1, y1, x2, y2, color
      end subroutine gdImageDashedLine
+
+     
      
     subroutine gdImageRectangle (imagepointer, x1, y1, x2, y2, color) bind(c, name = 'gdImageRectangle')
        import c_int, c_ptr
@@ -188,10 +188,96 @@ module fortran_libgd
        type(c_ptr) :: gdFontGetTiny
      end function gdFontGetTiny
 
-     
+     subroutine gdImageSetPixel(imagepointer, x, y, color)&
+          bind(c, name = 'gdImageSetPixel')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr), value :: imagepointer
+       integer(c_int), value :: x,y,color
+     end subroutine gdImageSetPixel
+
+     function gdImageGetPixel(imagepointer, x, y)&
+          bind(c, name = 'gdImageGetPixel')
+       import c_ptr, c_int
+       implicit none
+       integer(c_int) :: gdImageGetPixel
+       type(c_ptr):: imagepointer
+       integer(c_int), value:: x,y
+     end function gdImageGetPixel
+
+     function gdImageGetTrueColorPixel (imagepointer, x, y)&
+           bind(c, name = 'gdImageGetTrueColorPixel')
+       import c_ptr, c_int
+       implicit none
+      integer(c_int):: gdImageGetTrueColorPixel
+      type(c_ptr), value:: imagepointer
+      integer(c_int), value :: x,y
+     end function gdImageGetTrueColorPixel
+
+     function gdImageClone(src) bind(c, name = 'gdImageClone')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr):: gdImageClone
+       type(c_ptr), value:: src
+     end function gdImageClone
+
+     subroutine gdImageCopy(dst, src, dstX, dstY, srcX, srcY, w, h)&
+          bind(c, name = 'gdImageCopy')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr), value :: dst, src
+       integer(c_int), value :: dstX, dstY, srcX, srcY, w ,h
+     end subroutine gdImageCopy
+
+     subroutine gdImageCopyMerge(dst, src, dstX, dstY, srcX, srcY, w, h, pct)&
+          bind(c, name = 'gdImageCopyMerge')         
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr), value:: dst, src
+       integer(c_int), value :: dstX, dstY, srcX, srcY, w ,h, pct
+     end subroutine gdImageCopyMerge
+
+
+     subroutine gdImageCopyMergeGrey(dst, src, dstX, dstY, srcX, srcY, w, h, pct)&
+          bind(c, name = 'gdImageCopyMergeGrey')         
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr), value:: dst, src
+       integer(c_int), value :: dstX, dstY, srcX, srcY, w ,h, pct
+     end subroutine gdImageCopyMergeGrey
      
   end interface
+
+contains
+
+  function gdTrueColorGetAlpha(c)
+    implicit none
+    integer:: gdTrueColorGetAlpha 
+    integer(c_int) :: c
+    gdTrueColorGetAlpha = ishft(iand(c, z'7F000000'), 24_c_int)
+  end function gdTrueColorGetAlpha
+
+  function gdTrueColorGetRed(c)
+    implicit none
+    integer:: gdTrueColorGetRed 
+    integer(c_int) :: c
+    gdTrueColorGetRed = ishft(iand(c, z'00FF0000'), 16_c_int)
+  end function gdTrueColorGetRed
   
+  function gdTrueColorGetGreen(c)
+    implicit none
+    integer:: gdTrueColorGetGreen 
+    integer(c_int) :: c
+    gdTrueColorGetGreen = ishft(iand(c, z'0000FF00'), 8_c_int)
+  end function gdTrueColorGetGreen
+  
+  function gdTrueColorGetBlue(c)
+    implicit none
+    integer:: gdTrueColorGetBlue 
+    integer(c_int) :: c
+    gdTrueColorGetBlue = ishft(iand(c, z'000000FF'), 8_c_int)
+  end function gdTrueColorGetBlue
+
 end module fortran_libgd
 
 
