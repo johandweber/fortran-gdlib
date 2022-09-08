@@ -1,0 +1,1 @@
+In this directory the image files created by the test programs are stored.
