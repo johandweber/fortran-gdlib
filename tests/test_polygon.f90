@@ -1,10 +1,4 @@
-! This is just a "translation" of the cfirst example of the GD lib C
-! documentation at https://libgd.github.io/manuals/2.3.3/files/preamble-txt.html
-! to the Fortran language
-!
-! All bugs are my own
-
-program test_fortran_gd
+program test_polygon
   use iso_c_binding,  only: c_ptr, c_int, c_null_char, c_associated
   use iso_fortran_env, only: error_unit
   use fortran_libgd
@@ -79,4 +73,4 @@ program test_fortran_gd
  
   closestatus = gd_fclose(pngout)
   
-end program test_fortran_gd
+end program test_polygon
