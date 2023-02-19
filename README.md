@@ -17,6 +17,7 @@ and fill a pull request.
 The currently supported subroutines and functions are
 
 * gd_fclose
+* gdFontCacheShutdown
 * gdFontGetGiant
 * gdFontGetLarge
 * gdFontGetMediumBold
@@ -46,6 +47,10 @@ The currently supported subroutines and functions are
 * gdImagePng
 * gdImageRectangle
 * gdImageString
+* gdImageStringFT
+* gdMinorVersion
+* gdMajorVersion
+* gdReleaseVersion
 * gdTrueColorGetAlpha
 * gdTrueColorGetBlue
 * gdTrueColorGetGreen
@@ -58,3 +63,7 @@ The currently supported subroutines and functions are
 ## Compiling
 Edit the ```Makefile``` such that ist fits both your Fortran environment and your installation of the GD Library.
 The library is then created (along with an example application) by invoking the ```make``` command.
+
+## Running the tests
+Change to the ```tests``` subdirectory and run the ```run_tests.sh ``` script using the system shell. The output files can 
+then be found in the ```outpics``` subdirectory of 
