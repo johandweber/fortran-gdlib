@@ -66,4 +66,4 @@ The library is then created (along with an example application) by invoking the 
 
 ## Running the tests
 Change to the ```tests``` subdirectory and run the ```run_tests.sh ``` script using the system shell. The output files can 
-then be found in the ```outpics``` subdirectory of 
+then be found in the ```outpics``` subdirectory of tests.
