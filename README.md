@@ -2,10 +2,9 @@
 Fortran binding for the GD graphics library [https://libgd.github.io/](https://libgd.github.io/).
 
 ## Currents status and aims
-This is a Fortran binding for the GD graphics library.
 
-Currently it is in a very early state and supports only 
-a small subset of additional subroutines functions.
+Currently it is in an early state and supports only 
+a subset of the functions provides by the GD library.
 Currently it is in a very early state and only supports 
 a small small subset of the library.
 My plan is to gradually add more functions, but it is unlikely that the wrapper will ever
