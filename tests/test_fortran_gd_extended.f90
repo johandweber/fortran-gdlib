@@ -64,10 +64,10 @@ program test_fortran_gd_extended
   
   
 
-  pngout = gd_fopen("test_extended.png"//c_null_char, "wb"//c_null_char)
+  pngout = gd_fopen("outpics/test_extended.png"//c_null_char, "wb"//c_null_char)
 
 
-  jpegout =  gd_fopen("test_extended.jpeg"//c_null_char, "wb"//c_null_char)
+  jpegout =  gd_fopen("outpics/test_extended.jpeg"//c_null_char, "wb"//c_null_char)
 
   call gdImagePng(im, pngout)
  
