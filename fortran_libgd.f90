@@ -355,6 +355,35 @@ module fortran_libgd
        integer(c_int), value :: dstX, dstY, srcX, srcY, w ,h, pct
      end subroutine gdImageCopyMergeGrey
 
+     subroutine gdImageCopyResized(dst, src, dstX, dstY, srcX, srcY,&
+          dstW, dstH, srcW, srcH) &
+          bind(c, name = 'gdImageCopyResized')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr), value:: dst, src
+       integer(c_int), value :: dstX, dstY, srcX, srcY, dstW, dstH, srcW, srcH
+     end subroutine gdImageCopyResized
+
+     subroutine gdImageCopyRotated(dst, src, dstX, dstY, srcX, srcY, srcWidth,&
+          srcHeight, angle) &
+          bind(c, name='gdImageCopyRotated')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr):: dst, src
+       integer(c_int):: dstX, dstY, srcX, srcY, srcWidth, srcHeight, angle
+     end subroutine gdImageCopyRotated
+
+     subroutine gdImageCopyResampled(dst, src, dstX, dstY, srcX, srcY,&
+          srcW, srcH, angle) &
+          bind(c, name='gdImageCopyResampled')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr):: dst, src
+       integer(c_int)::  dstX, dstY, srcX, srcY,srcW, srcH, angle
+     end subroutine gdImageCopyResampled
+
+     
+     
      subroutine gdImageStringFT(im, brect, fg, fontlist, ptsize, angle,x,y,string)&
           bind(c, name = 'gdImageStringFT')
        import c_char, c_ptr, c_int, c_double
