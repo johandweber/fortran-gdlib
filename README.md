@@ -29,7 +29,7 @@ The currently supported subroutines and functions are
 * gdImageBlue
 * gdImageBrightness
 * gdImageClone
-+ gdImageColor
+* gdImageColor
 * gdImageColorAllocate
 * gdImageColorAllocateAlpha
 * gdImageColorsTotal
@@ -93,7 +93,7 @@ The currently supported subroutines and functions are
 * gdImageSY
 * gdImageTrueColor
 * gdImageTrueColorPixel
-+ gdLayerMultiply
+* gdLayerMultiply
 * gdLayerOverlay
 * gdMinorVersion
 * gdMajorVersion
