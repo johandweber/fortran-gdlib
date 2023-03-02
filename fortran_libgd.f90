@@ -139,7 +139,6 @@ module fortran_libgd
        integer(c_int), value :: xsize, ysize
      end function gdImageCreate
 
-
      function gdImageCreateTrueColor(xsize, ysize) bind(c, name = 'gdImageCreateTrueColor')
        import:: c_ptr, c_int
        implicit none
@@ -147,7 +146,6 @@ module fortran_libgd
        integer(c_int), value :: xsize, ysize
      end function gdImageCreateTrueColor
      
-
      subroutine gdImageDestroy(im) bind(c, name = 'gdImageDestroy')
        import:: c_ptr
        implicit none
@@ -170,7 +168,6 @@ module fortran_libgd
        integer(c_int), value :: r, g, b, a
      end function gdImageColorAllocateAlpha
 
-
      subroutine gdImageLine (im, x1, y1, x2, y2, color) bind(c, name = 'gdImageLine')
        import c_int, c_ptr
        implicit none
@@ -184,8 +181,6 @@ module fortran_libgd
        type(c_ptr)   , value :: im
        integer(c_int), value :: x1, y1, x2, y2, color
      end subroutine gdImageDashedLine
-
-     
      
     subroutine gdImageRectangle (im, x1, y1, x2, y2, color) bind(c, name = 'gdImageRectangle')
        import c_int, c_ptr
@@ -193,7 +188,6 @@ module fortran_libgd
        type(c_ptr)   , value :: im
        integer(c_int), value :: x1, y1, x2, y2, color
      end subroutine gdImageRectangle
-
       
     subroutine gdImageFilledRectangle (im, x1, y1, x2, y2, color) bind(c, name = 'gdImageFilledRectangle')
        import c_int, c_ptr
@@ -209,7 +203,6 @@ module fortran_libgd
        type(c_ptr)   , value :: im
        integer(c_int), value :: mx, my, w, h, color
      end subroutine gdImageEllipse
-
       
     subroutine gdImageFilledEllipse (im, mx, my, w, h, color) bind(c, name = 'gdImageFilledEllipse')
        import c_int, c_ptr
@@ -257,7 +250,6 @@ module fortran_libgd
        type(c_ptr), value :: im
        type(c_ptr), value :: filepointer
      end subroutine gdImagePng
-
      
      subroutine gdImageJpeg (im, filepointer, quality) bind(c, name = 'gdImageJpeg')
        import c_ptr, c_int
@@ -346,7 +338,6 @@ module fortran_libgd
        integer(c_int), value :: dstX, dstY, srcX, srcY, w ,h, pct
      end subroutine gdImageCopyMerge
 
-
      subroutine gdImageCopyMergeGrey(dst, src, dstX, dstY, srcX, srcY, w, h, pct)&
           bind(c, name = 'gdImageCopyMergeGrey')         
        import c_ptr, c_int
@@ -381,8 +372,6 @@ module fortran_libgd
        type(c_ptr):: dst, src
        integer(c_int)::  dstX, dstY, srcX, srcY,srcW, srcH, angle
      end subroutine gdImageCopyResampled
-
-     
      
      subroutine gdImageStringFT(im, brect, fg, fontlist, ptsize, angle,x,y,string)&
           bind(c, name = 'gdImageStringFT')
@@ -521,7 +510,7 @@ module fortran_libgd
        bind(c, name = 'wrap_gdImageTrueColorPixel')
        import c_int, c_ptr
        implicit none
-       type(c_ptr), value :: im
+       type(c_ptr), value :: im 
        integer(c_int), value:: x,y
        integer(c_int) ::  gdImageTrueColorPixel 
      end function gdImageTrueColorPixel
@@ -541,7 +530,275 @@ module fortran_libgd
        type(c_ptr), value :: im
        integer(c_int) :: gdImageResolutionY 
      end function  gdImageResolutionY
-            
+
+     function gdImageScatter(im, sub, plus) &
+          bind(c, name='gdImageScatter')
+       import c_ptr, c_int
+       implicit none
+       integer(c_int):: gdImageScatter
+       type(c_ptr), value :: im
+       integer(c_int), value:: sub, plus
+     end function gdImageScatter
+
+     function gdImageScatterColor(im, sub, plus, colors, num_colors)&
+          bind(c, name='gdImageScatterColor')
+       import c_ptr, c_int
+       implicit none
+       integer(c_int):: gdImageScatterColor
+       type(c_ptr), value:: im
+       integer(c_int), value:: sub, plus, num_colors
+       integer(c_int),  intent(in) :: colors(*)
+     end function gdImageScatterColor
+
+     function gdImagePixelate(im, block_size, mode)&
+          bind(c, name='gdImagePixelate')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImagePixelate
+       type(c_ptr), value:: im
+       integer(c_int), value ::  block_size, mode
+     end function gdImagePixelate
+
+     function gdImageNegate(src)&
+          bind(c, name='gdImageNegate')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageNegate
+       type(c_ptr), value:: src
+     end function gdImageNegate
+
+     function gdImageGrayScale(src)&
+          bind(c, name='gdImageGrayScale')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageGrayScale
+       type(c_ptr), value :: src
+     end function gdImageGrayScale
+     
+      function gdImageBrightness(src, brightness)&
+          bind(c, name='gdImageBrightness')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageBrightness
+       type(c_ptr):: src
+       integer(c_int), value:: brightness
+     end function gdImageBrightness
+
+     function gdImageContrast(src, contrast)&
+          bind(c, name='gdImageContrast')
+       import c_int, c_double, c_ptr
+       implicit none
+       integer(c_int):: gdImageContrast
+       type(c_ptr), value:: src
+       real(c_double), value:: contrast
+     end function gdImageContrast
+
+     function gdImageColor(src, red, green, blue, alpha)&
+          bind(c, name='gdImageColor')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int) :: gdImageColor
+       type(c_ptr), value :: src
+       integer(c_int), value:: red, green, blue, alpha
+     end function gdImageColor
+
+!!$     function gdImageConvolution(src, filter, filter_div, offset)&
+!!$          bind(c, name='gdImageConvolution')
+!!$       import c_int, c_float, c_ptr
+!!$       implicit none
+!!$       integer(c_int):: gdImageConvolution
+!!$       type(c_ptr):: src
+!!$       real(c_float), value:: filter(0:3)
+!!$       real(c_float), value:: filter_div, offset
+!!$     end function gdImageConvolution
+
+     function gdImageSelectiveBlur(src) &
+          bind(c, name='gdImageSelectiveBlur')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageSelectiveBlur
+       type(c_ptr), value:: src
+     end function gdImageSelectiveBlur
+
+     function gdImageEdgeDetectQuick(src) &
+          bind(c, name='gdImageEdgeDetectQuick')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageEdgeDetectQuick
+       type(c_ptr), value:: src
+     end function gdImageEdgeDetectQuick
+
+    
+     function gdImageGaussianBlur(src) &
+          bind(c, name='gdImageGaussianBlur')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageGaussianBlur
+       type(c_ptr), value:: src
+     end function gdImageGaussianBlur
+
+     function gdImageEmboss(src) &
+          bind(c, name='gdImageEmboss')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageEmboss
+       type(c_ptr), value:: src
+     end function gdImageEmboss
+     
+     function gdImageMeanRemoval(src) &
+          bind(c, name='gdImageMeanRemoval')
+       import c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageMeanRemoval
+       type(c_ptr), value:: src
+     end function gdImageMeanRemoval
+ 
+     function gdImageSmooth(im, weight) &
+          bind(c, name='gdImageSmooth')
+       import c_int, c_float, c_ptr
+       implicit none
+       integer(c_int):: gdImageSmooth
+       real(c_float), value:: weight 
+       type(c_ptr), value:: im
+     end function gdImageSmooth
+ 
+     function gdImageCopyGaussianBlurred(src, radius, sigma) &
+          bind(c, name='gdImageCopyGaussianBlurred')
+       import c_int, c_double, c_ptr
+       implicit none
+       integer(c_int):: gdImageCopyGaussianBlurred
+       type(c_ptr), value:: src
+       integer(c_int), value:: radius
+       real(c_double), value:: sigma 
+     end function gdImageCopyGaussianBlurred
+
+     subroutine gdImageFlipVertical(im)&
+          bind(c, name ='gdImageFlipVertical')
+       import c_ptr
+       implicit none
+       type(c_ptr):: im
+     end subroutine gdImageFlipVertical
+
+     subroutine gdImageFlipHorizontal(im)&
+          bind(c, name ='gdImageFlipHorizontal')
+       import c_ptr
+       implicit none
+       type(c_ptr):: im
+     end subroutine gdImageFlipHorizontal
+     
+     subroutine gdImageFlipBoth(im)&
+          bind(c, name ='gdImageFlipBoth')
+       import c_ptr
+       implicit none
+       type(c_ptr):: im
+     end subroutine gdImageFlipBoth
+     
+     function gdSupportsFileType(filename, writing)&
+          bind(c, name='gdSupportsFileTyp')
+       import c_char, c_int
+       implicit none
+       integer(c_int):: gdSupportsFileType
+       character(c_char), intent(in) :: filename(*)
+       integer(c_int), value:: writing
+     end function gdSupportsFileType
+
+     function gdImageFile(im, filename)&
+          bind(c, name='gdImageFile')
+       import c_char, c_int, c_ptr
+       implicit none
+       integer(c_int):: gdImageFile
+       type(c_ptr), value:: im
+       character(c_char), intent(in) :: filename
+     end function gdImageFile
+
+     subroutine getImageSetStyle(im, style, noOfPixels)&
+          bind(c, name='getImageSetStyle')
+       import c_ptr,c_int
+       implicit none
+       type(c_ptr), value:: im
+       integer(c_int), intent(in):: style(*)
+       integer(c_int), value:: noOfPixels
+     end subroutine getImageSetStyle
+
+     subroutine gdImageSetThickness(im, thickness)&
+          bind(c, name='gdImageSetThickness')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr), value:: im
+       integer(c_int), value:: thickness
+     end subroutine gdImageSetThickness
+
+     subroutine gdImageSetBrush(im, brush)&
+          bind(c, name='gdImageSetBrush')
+       import c_ptr
+       implicit none
+       type(c_ptr), value :: im, brush
+     end subroutine gdImageSetBrush
+
+     subroutine gdImageSetTile(im, tile)&
+          bind(c, name='gdImageSetTile')
+       import c_ptr
+       implicit none
+       type(c_ptr), value :: im, brush
+     end subroutine gdImageSetTile
+
+     subroutine gdImageSetAntiAliased(im, c)&
+          bind(c, name ='gdImageSetAntiAliased')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr), value:: im
+       integer(c_int), value :: c
+     end subroutine gdImageSetAntiAliased
+
+     subroutine gdImageSetAntiAliasedDontBlend(im, c, dont_blend)&
+          bind(c, name='gdImageSetAntiAliasedDontBlend')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr), value:: im
+       integer(c_int), value:: c, dont_blend
+     end subroutine gdImageSetAntiAliasedDontBlend
+
+     subroutine gdImageInterlace(im, interlaceArg)&
+          bind(c, name='gdImageInterlace')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr), value:: im
+       integer(c_int), value :: interlaceArg
+     end subroutine gdImageInterlace
+
+     function gdImageCompare(im1, im2)&
+          bind(c, name='gdImageCompare')
+       import c_ptr
+       implicit none
+       integer(c_int)::gdImageCompare
+       type(c_ptr), value:: im1, im2
+     end function gdImageCompare
+
+     function gdAlphaBlend(dst, src)&
+          bind(c, name='gdAlphaBlend')
+       import c_int
+       implicit none
+       integer(c_int):: gdAlphaBlend
+       integer(c_int), value:: dst, src
+     end function gdAlphaBlend
+       
+     function gdLayerOverlay(dst, src)&
+          bind(c, name='gdLayerOverlay')
+       import c_int
+       implicit none
+       integer(c_int)::gdLayerOverlay
+       integer(c_int), value:: dst, src
+     end function gdLayerOverlay
+
+     function gdLayerMultiply(dst, src)&
+          bind(c, name='gdLayerOverlay')
+       import c_int
+       implicit none
+       integer(c_int)::gdLayerMultiply
+       integer(c_int), value:: dst, src
+     end function gdLayerMultiply
+     
+     
   end interface
 
 contains
