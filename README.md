@@ -12,6 +12,7 @@ Fortran binding for the GD graphics library [https://libgd.github.io/](https://l
   - [Primitive Drawing Operations](#primitive-drawing-operations)
   - [Font Handling](#font-handling)
   - [Image Processing](#image-processing)
+  - [Animation](#animation)
 
 <a name="requirements"></a>
 ## Requirements
@@ -112,9 +113,11 @@ is not mentioned here, it is likely not supported)
 * gdImageCopyMergeGrey (❓)
 * gdImageCopyResampled (❓)
 * gdImageCopyResized (❓)
-* gdImageCopyRotated (❓)
+* gdImageCopyRotated ((✅)
 * gdImageCreate (✅)
+* gdImageCreateFromGifd (❓)
 * gdImageCreateFromFile (✅)
+* gdImageCreateFromPng (✅
 * gdImageCreatePaletteFromTrueColor (✅)
 * gdImageCreateTrueColor (✅)
 * gdImageCrop (✅)
@@ -146,10 +149,11 @@ is not mentioned here, it is likely not supported)
 * gdImageGifAnimAdd (✅)
 * gdImageGifAnimAddCtx (✘)
 * gdImageGifAnimAddPtr (✅) 
-* gdImageGifAnimCtx (✘)
 * gdImageGifAnimBegin (✅)
 * gdImageGifAnimBeginCtx (✘)
 * gdImageGifAnimBeginPtr (✅)
+* gdImageGifAnimCtx (✘)
+* gdImageGifAnimEnd (✅)
 * gdImageGifCtx (✘)
 * gdImageGifPtr (✅)
 * gdImageGrayScale (❓)
@@ -222,6 +226,7 @@ Demonstration of primitive Drawing operations (line arcs, filling areas ect..)
 ![Primitives](sample_images/test_extended.png)
 
 Regular polygon wirth 30 corners and diagonals.
+
 ![30-gon](sample_images/polygon.png)
 
 <a name="font-handling"></a>
@@ -241,6 +246,12 @@ the last one uses an edge-detection function built-in in GD lib
 ![Green Channel](sample_images/flowers_green.jpg)
 ![Blue Channel](sample_images/flowers_blue.jpg)
 ![Automatic Edge Detection](sample_images/flowers_edge.jpg)
+
+<a name="animations"></a>
+### Animations
+Animation of an image that is rotated
+
+![Animation](sample_images/animation.gif)
 
 
 
