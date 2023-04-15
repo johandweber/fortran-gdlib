@@ -486,16 +486,17 @@ module fortran_libgd
         import c_ptr, c_int
         implicit none
         type(c_ptr), value:: dst, src
-        integer(c_int), value :: dstX, dstY, srcX, srcY, dstW, dstH, srcW, srcH
+        integer(c_int), value :: dstX, dstY,srcX, srcY, dstW, dstH, srcW, srcH
       end subroutine gdImageCopyResized
       
       subroutine gdImageCopyRotated(dst, src, dstX, dstY, srcX, srcY, srcWidth,&
            srcHeight, angle) &
            bind(c, name='gdImageCopyRotated')
-        import c_int, c_ptr
+        import c_int, c_ptr, c_double
         implicit none
-        type(c_ptr):: dst, src
-        integer(c_int):: dstX, dstY, srcX, srcY, srcWidth, srcHeight, angle
+        type(c_ptr), value:: dst, src
+        real(c_double), value:: dstX, dstY
+        integer(c_int), value:: srcX, srcY, srcWidth, srcHeight, angle
       end subroutine gdImageCopyRotated
       
       function gdImageCreate(xsize, ysize) bind(c, name = 'gdImageCreate')
@@ -504,7 +505,15 @@ module fortran_libgd
         type(c_ptr) :: gdImageCreate
         integer(c_int), value :: xsize, ysize
       end function gdImageCreate
-
+     
+      function gdImageCreateFromFile(filename) &
+           bind(c, name = 'gdImageCreateFromFile')
+        import c_ptr, c_char
+        implicit none
+        type(c_ptr) :: gdImageCreateFromFile
+        character(kind= c_char),   intent(in) :: filename(*)
+      end function gdImageCreateFromFile
+       
       function gdImageCreateFromGif(fdFile) &
            bind(c, name = 'gdImageCreateFromGif')
         import c_ptr, c_char
@@ -512,6 +521,14 @@ module fortran_libgd
         type(c_ptr) :: gdImageCreateFromGif
         type(c_ptr), value:: fdFile 
       end function gdImageCreateFromGif
+       
+      function gdImageCreateFromPng(fdFile) &
+           bind(c, name = 'gdImageCreateFromPng')
+        import c_ptr, c_char
+        implicit none
+        type(c_ptr) :: gdImageCreateFromPng
+        type(c_ptr), value:: fdFile 
+      end function gdImageCreateFromPng
 
       function gdImageCreateFromGifPtr(size, data) &
            bind(c, name = 'gdImageCreateFromGif')
@@ -521,15 +538,7 @@ module fortran_libgd
         integer(c_int), value:: size
         character(c_char):: data(*)
       end function gdImageCreateFromGifPtr
-      
-      function gdImageCreateFromFile(filename) &
-           bind(c, name = 'gdImageCreateFromFile')
-        import c_ptr, c_char
-        implicit none
-        type(c_ptr) :: gdImageCreateFromFile
-        character(kind= c_char),   intent(in) :: filename(*)
-      end function gdImageCreateFromFile
-
+     
       function gdImageCreatePaletteFromTrueColor(im, dither, colorsWanted)&
            bind(c, name = 'gdImageCreatePaletteFromTrueColor')
         import c_int, c_ptr
@@ -721,7 +730,7 @@ module fortran_libgd
            bind(c, name='gdImageGif')
         import c_ptr
         implicit none
-        type(c_ptr):: im, outFile
+        type(c_ptr), value:: im, outFile
       end subroutine gdImageGif
 
       subroutine gdImageGifAnimAdd(im, outFile, LocalCM, LeftOfs, TopOfs, Delay, Disposal, previm)&
@@ -745,7 +754,7 @@ module fortran_libgd
            bind(c, name='gdImageGifAnimBegin')
         import c_ptr, c_int
         implicit none
-        type(c_ptr):: im, outFile
+        type(c_ptr), value:: im, outFile
         integer(c_int), value:: GlobalCM, Loops
       end subroutine gdImageGifAnimBegin
 
@@ -758,6 +767,13 @@ module fortran_libgd
         integer(c_int):: size
         integer(c_int), value :: GlobalCM, Loops
       end function gdImageAnimBeginPtr
+
+      subroutine gdImageGifAnimEnd(outFile)&
+           bind(c, name='gdImageGifAnimEnd')
+        import c_ptr
+        implicit none
+        type(c_ptr), value:: outFile
+      end subroutine gdImageGifAnimEnd
 
       function gdImageGifPtr(im, size)&
            bind(c, name = 'gdImageGifPtr')
