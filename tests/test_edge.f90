@@ -1,6 +1,6 @@
 program test_edge
-  use iso_c_binding, only:  c_ptr, c_int
-  use fortran_libgd
+  use, intrinsic:: iso_c_binding, only:  c_ptr, c_int
+  use  fortran_libgd
   implicit none
 
   type(c_ptr) :: im            ! image pointer

@@ -5,7 +5,7 @@
 ! All bugs are my own
 
 program test_fortran_gd
-  use iso_c_binding,  only: c_ptr, c_int, c_null_char
+  use, intrinsic:: iso_c_binding,  only: c_ptr, c_int, c_null_char
   use fortran_libgd
   implicit none
 

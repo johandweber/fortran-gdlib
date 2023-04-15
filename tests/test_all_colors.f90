@@ -1,6 +1,6 @@
 program test_all_colors
-  use iso_c_binding,  only: c_ptr, c_int, c_null_char, c_associated
-  use iso_fortran_env, only: error_unit
+  use, intrinsic:: iso_c_binding,  only: c_ptr, c_int, c_null_char, c_associated
+  use, intrinsic:: iso_fortran_env, only: error_unit
   use fortran_libgd
  
   ! Declare the image  

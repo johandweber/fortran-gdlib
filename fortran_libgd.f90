@@ -1,5 +1,5 @@
 module fortran_libgd
-  use iso_c_binding
+  use, intrinsic ::  iso_c_binding
   implicit none
 
   type, bind(c):: gdPoint
@@ -529,6 +529,15 @@ module fortran_libgd
         type(c_ptr) :: gdImageCreateFromFile
         character(kind= c_char),   intent(in) :: filename(*)
       end function gdImageCreateFromFile
+
+      function gdImageCreatePaletteFromTrueColor(im, dither, colorsWanted)&
+           bind(c, name = 'gdImageCreatePaletteFromTrueColor')
+        import c_int, c_ptr
+        implicit none
+        integer(c_int):: gdImageCreatePaletteFromTrueColor
+        type(c_ptr), value :: im
+        integer(c_int), value:: dither, colorsWanted
+      end function gdImageCreatePaletteFromTrueColor
       
       function gdImageCreateTrueColor(xsize, ysize)&
            bind(c, name = 'gdImageCreateTrueColor')
@@ -723,6 +732,15 @@ module fortran_libgd
         integer(c_int), value:: LocalCM, LeftOfs, TopOfs, Delay, Disposal
       end subroutine gdImageGifAnimAdd
 
+      subroutine gdImageGifAnimAddPtr(im, size, LocalCM, LeftOfs, TopOfs, Delay, Disposal, previm)&
+           bind(c, name='gdImageGifAnimAddPtr')
+        import c_ptr, c_int
+        implicit none
+        type(c_ptr), value:: im, previm
+        integer(c_int) :: size
+        integer(c_int), value:: LocalCM, LeftOfs, TopOfs, Delay, Disposal
+      end subroutine gdImageGifAnimAddPtr
+
       subroutine gdImageGifAnimBegin(im, outFile, GlobalCM, Loops)&
            bind(c, name='gdImageGifAnimBegin')
         import c_ptr, c_int
@@ -805,6 +823,15 @@ module fortran_libgd
         integer(c_int):: gdImageNegate
         type(c_ptr), value:: src
       end function gdImageNegate
+
+      function gdImageNeuQuant(im, max_color, sample_factor)&
+           bind(c, name='gdImageNeuQuant')
+        import c_int, c_ptr
+        implicit none
+        type(c_ptr) :: gdImageNeuQuant
+        type(c_ptr), value:: im
+        integer(c_int), value:: max_color, sample_factor
+      end function gdImageNeuQuant
 
       subroutine gdImageOpenPolygon(im, p, n, c)&
            bind(c, name=' gdImageOpenPolygon')
@@ -889,7 +916,26 @@ module fortran_libgd
         type(c_ptr), value :: im
         integer(c_int) :: gdImageResolutionY 
       end function  gdImageResolutionY
-      
+
+      function gdImageScale (src, new_width, new_height) &
+           bind(c, name = 'gdImageScale')
+        import c_int, c_ptr
+        implicit none
+        type(c_ptr):: gdImageScale
+        type(c_ptr), value:: src
+        integer(c_int), value:: new_width, new_height
+      end function gdImageScale
+
+      function gdImageRotateInterpolated (src, angle, bgcolor) &
+           bind(c, name = 'gdImageRotateIntedrpolatzed')
+        import c_int, c_ptr, c_float
+        implicit none
+        type(c_ptr):: gdImageRotateInterpolated
+        type(c_ptr), value:: src
+        real(c_float), value:: angle
+        integer(c_int), value:: bgcolor
+      end function 
+    
       function gdImageScatter(im, sub, plus) &
            bind(c, name='gdImageScatter')
         import c_ptr, c_int
@@ -909,7 +955,7 @@ module fortran_libgd
         integer(c_int),  intent(in) :: colors(*)
      end function gdImageScatterColor
      
-     function gdImageSelectiveBlur(src) &
+     function gdImageSelectiveBlur(src)&
           bind(c, name='gdImageSelectiveBlur')
        import c_int, c_ptr
        implicit none
@@ -1057,7 +1103,7 @@ module fortran_libgd
        integer(c_int) ::  gdImageSY
      end function gdImageSY
      
-     function gdImageTrueColor (im) &
+     function gdImageTrueColor (im)&
           bind(c, name = 'wrap_gdImageTrueColor')
        import c_int, c_ptr
        implicit none
@@ -1065,7 +1111,7 @@ module fortran_libgd
        integer(c_int) ::  gdImageTrueColor
      end function gdImageTrueColor
      
-     function gdImageTrueColorPixel (im,x,y) &
+     function gdImageTrueColorPixel (im,x,y)&
           bind(c, name = 'wrap_gdImageTrueColorPixel')
        import c_int, c_ptr
        implicit none
@@ -1073,7 +1119,34 @@ module fortran_libgd
        integer(c_int), value:: x,y
        integer(c_int) ::  gdImageTrueColorPixel 
      end function gdImageTrueColorPixel
-     
+
+     function gdImageTrueColorToPalette(im, dither, colorsWanted)&
+          bind(c, name = 'gdImageTrueColorTopPalette')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr), value :: im
+       integer(c_int):: gdImageTrueColorToPalette
+       integer(c_int), value :: dither, colorsWanted
+     end function gdImageTrueColorToPalette
+
+     function gdImageTrueColorToPaletteSetMethod(im, method, speed)&
+       bind(c, name='gdImageTrueColorToPaletteSetMethod')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr), value:: im
+       integer(c_int):: gdImageTrueColorToPaletteSetMethod
+       integer(c_int), value:: method, speed
+     end function gdImageTrueColorToPaletteSetMethod
+
+     function gdImageTrueColorToPaletteSetQuality(im, min_quality, max_quality)&
+       bind(c, name='gdImageTrueColorToPaletteSetQuality')
+       import c_int, c_ptr
+       implicit none
+       type(c_ptr), value:: im
+       integer(c_int):: gdImageTrueColorToPaletteSetQuality
+       integer(c_int), value:: min_quality, max_quality
+     end function gdImageTrueColorToPaletteSetQuality
+    
      function gdLayerMultiply(dst, src)&
           bind(c, name='gdLayerOverlay')
        import c_int
