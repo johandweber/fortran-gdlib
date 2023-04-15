@@ -221,6 +221,9 @@ Demonstration of primitive Drawing operations (line arcs, filling areas ect..)
 <a name="primitive-drawing-operations"></a>
 ![Primitives](sample_images/test_extended.png)
 
+Regular polygon wirth 30 corners and diagonals.
+![30-gon](sample_images/polygon.png)
+
 <a name="font-handling"></a>
 ### Font Handling
 Demonstration of the True-Type Font handling capabilities of the Library (the rectangles with quotation marks are indicators that a character is not provided by the current font and not a bug of the library..
