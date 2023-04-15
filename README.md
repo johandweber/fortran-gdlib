@@ -247,8 +247,8 @@ the last one uses an edge-detection function built-in in GD lib
 ![Blue Channel](sample_images/flowers_blue.jpg)
 ![Automatic Edge Detection](sample_images/flowers_edge.jpg)
 
-<a name="animations"></a>
-### Animations
+<a name="animation"></a>
+### Animation
 Animation of an image that is rotated
 
 ![Animation](sample_images/animation.gif)
