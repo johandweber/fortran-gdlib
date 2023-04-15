@@ -37,11 +37,11 @@ by Vincent Magnin and others: [https://github.com/vmagnin/gtk-fortran/wiki/Fortr
 
 I think the most important points one has to get used to are:
 
-* use the ```iso_c_binding``` intrinsic module and the data typed defined there for C compatibility.
+* Use the ```iso_c_binding``` intrinsic module and the data typed defined there for C compatibility.
 
-* add the ```c_null_char``` at the end every string.
+* Add the ```c_null_char``` at the end every string.
 
-* use a C type file handling using the wrapper functions ```gd_fopen``` for the ```fopen``` function of the C library
+* Use a C type file handling using the wrapper functions ```gd_fopen``` for the ```fopen``` function of the C library
 and ```gd_fclose``` for the ```fclose``` function of the C standard library. So unfortunately the
 binding does not integrate well in the Fortran way of handling files (and there is no easy way to
 implement this in a portable way).
