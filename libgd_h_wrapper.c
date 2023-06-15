@@ -1,4 +1,5 @@
 #include<gd.h>
+#include<stdio.h>
 
 /* Functions that wrap the accessor macros so nthat they can be interaced from
    Fortran */
@@ -53,6 +54,21 @@ int wrap_gdImageResolutionX(gdImagePtr im){
 
 int wrap_gdImageResolutionY(gdImagePtr im){
   return gdImageResolutionY(im);
+}
+
+FILE* wrap_popen(const char *command, const char *type){
+
+  FILE* myfile = NULL;
+
+#ifdef _POSIX_C_SOURCE
+  myfile=popen(command, type);
+#endif
+
+#ifdef _WIN32
+  myfile = _popen(command, type);
+#endif
+
+  return myfile;
 }
     
   

@@ -5,3 +5,5 @@
 ./test_polygon
 ./test_analyze_image
 ./test_edge
+./test_animation
+./test_im_int_array

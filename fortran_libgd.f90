@@ -129,7 +129,11 @@ module fortran_libgd
      end enum
   
      interface
-     
+
+ !===============================================================================
+        ! Functions thet are _not_ part of libgd but of the standard C library,
+        ! but still required to access the functionality of libgd. 
+        
         function gd_fclose(filepointer)&
              bind(c, name = 'fclose')
           import:: c_ptr,c_int
@@ -145,6 +149,23 @@ module fortran_libgd
           type(c_ptr) :: gd_fopen
           character(kind= c_char),   intent(in) :: filename(*), modus(*) 
         end function gd_fopen
+
+        function gd_fflush(stream)&
+             bind(c, name = 'fflush')
+          import c_ptr, c_int
+          implicit none
+          integer(c_int):: gd_fflush
+          type(c_ptr), value :: stream
+        end function gd_fflush
+
+        function gd_popen(stream)&
+             bind(c, name = 'wrap_popen')
+          import c_ptr, c_int
+          integer(c_int):: gd_popen
+          type(c_ptr), value :: stream
+        end function gd_popen
+ !==============================================================================
+        
         
         function gdAlphaBlend(dst, src)&
              bind(c, name='gdAlphaBlend')
@@ -227,6 +248,25 @@ module fortran_libgd
           integer(c_int) :: gdImageBlue
         end function gdImageBlue
 
+        subroutine gdImageBmp (im, filepointer, compression)&
+             bind(c, name = 'gdImageBmp')
+          import c_ptr, c_int
+          implicit none
+          type(c_ptr), value :: im
+          type(c_ptr), value :: filepointer
+          integer(c_int), value :: compression
+        end subroutine gdImageBmp
+
+        function gdImageBmpPtr(im, size, compression)&
+             bind(c, name = 'gdImageBmpPtr')
+          import c_ptr, c_int
+          implicit none
+          type(c_ptr) :: gdImageBmpPtr
+          type(c_ptr), value:: im
+          integer(c_int) :: size
+          integer (c_int), value :: compression
+        end function gdImageBmpPtr
+        
         function gdImageBoundsSafe(im, x, y)&
              bind(c, name='gdImageBoundsSave')
           import c_ptr, c_int
@@ -505,7 +545,24 @@ module fortran_libgd
         type(c_ptr) :: gdImageCreate
         integer(c_int), value :: xsize, ysize
       end function gdImageCreate
-     
+
+      function gdImageCreateFromBmp(inFile) &
+           bind(c, name = 'gdImageCreateFromBmp')
+        import c_ptr, c_char
+        implicit none
+        type(c_ptr) :: gdImageCreateFromBmp
+        type(c_ptr), value :: inFile
+      end function gdImageCreateFromBmp
+
+      function gdImageCreateFromBmpPtr(size, data) &
+           bind(c, name = 'gdImageCreateFromBmpPtr')
+        import c_ptr, c_int
+        implicit none
+        type(c_ptr) :: gdImageCreateFromBmpPtr
+        integer(c_int), value:: size
+        type(c_ptr), value ::data
+      end function gdImageCreateFromBmpPtr
+                
       function gdImageCreateFromFile(filename) &
            bind(c, name = 'gdImageCreateFromFile')
         import c_ptr, c_char
@@ -521,6 +578,15 @@ module fortran_libgd
         type(c_ptr) :: gdImageCreateFromGif
         type(c_ptr), value:: fdFile 
       end function gdImageCreateFromGif
+      
+      function gdImageCreateFromGifPtr(size, data) &
+           bind(c, name = 'gdImageCreateFromGif')
+        import c_ptr, c_int, c_char
+        implicit none
+        type(c_ptr) :: gdImageCreateFromGifPtr
+        integer(c_int), value:: size
+        character(c_char):: data(*)
+      end function gdImageCreateFromGifPtr
        
       function gdImageCreateFromPng(fdFile) &
            bind(c, name = 'gdImageCreateFromPng')
@@ -530,14 +596,22 @@ module fortran_libgd
         type(c_ptr), value:: fdFile 
       end function gdImageCreateFromPng
 
-      function gdImageCreateFromGifPtr(size, data) &
-           bind(c, name = 'gdImageCreateFromGif')
-        import c_ptr, c_int, c_char
+      function gdImageCreateFromTiff(fdFile) &
+           bind(c, name = 'gdImageCreateFromTiff')
+        import c_ptr, c_char
         implicit none
-        type(c_ptr) :: gdImageCreateFromGifPtr
-        integer(c_int), value:: size
-        character(c_char):: data(*)
-      end function gdImageCreateFromGifPtr
+        type(c_ptr) :: gdImageCreateFromTiff
+        type(c_ptr), value:: fdFile 
+      end function gdImageCreateFromTiff
+
+      function gdImageCreateFromTiffPtr(size, data) &
+           bind(c, name = 'gdImageCreateFromTiffPtr')
+        import c_ptr, c_int
+        implicit none
+        type(c_ptr):: gdImageCreateFromTiffPtr
+        integer(c_int), value :: size
+        type(c_ptr), value:: data
+      end function gdImageCreateFromTiffPtr
      
       function gdImageCreatePaletteFromTrueColor(im, dither, colorsWanted)&
            bind(c, name = 'gdImageCreatePaletteFromTrueColor')
@@ -900,7 +974,6 @@ module fortran_libgd
         integer(c_int), value:: n, c
       end subroutine gdImagePolygon
 
-            
       subroutine gdImageRectangle (im, x1, y1, x2, y2, color) bind(c, name = 'gdImageRectangle')
         import c_int, c_ptr
         implicit none
@@ -1118,7 +1191,23 @@ module fortran_libgd
        type(c_ptr), value :: im
        integer(c_int) ::  gdImageSY
      end function gdImageSY
-     
+
+     subroutine gdImageTiff(im, outfile)&
+          bind(c, name ='gdImageTiff')
+       import c_ptr
+       implicit none
+       type(c_ptr), value :: im, outfile
+     end subroutine gdImageTiff
+
+     function gdImageTiffPtr (im, size)&
+          bind(c, name = 'gdImageTiffPtr')
+       import c_ptr, c_int
+       implicit none
+       type(c_ptr):: gdImageTiffPtr
+       type(c_ptr), value::im
+       integer(c_int) :: size
+     end function gdImageTiffPtr
+       
      function gdImageTrueColor (im)&
           bind(c, name = 'wrap_gdImageTrueColor')
        import c_int, c_ptr
@@ -1217,30 +1306,72 @@ contains
     implicit none
     integer(c_int):: gdTrueColorGetAlpha 
     integer(c_int) :: c
-    gdTrueColorGetAlpha = ishft(iand(c, z'7F000000'), 24_c_int)
+    gdTrueColorGetAlpha = ishft(iand(c, z'7F000000'), -24_c_int)
   end function gdTrueColorGetAlpha
   
   function gdTrueColorGetRed(c)
     implicit none
     integer(c_int):: gdTrueColorGetRed 
     integer(c_int) :: c
-    gdTrueColorGetRed = ishft(iand(c, z'00FF0000'), 16_c_int)
+    gdTrueColorGetRed = ishft(iand(c, z'00FF0000'), -16_c_int)
   end function gdTrueColorGetRed
-  
-  function gdTrueColorGetBlue(c)
-    implicit none
-    integer(c_int):: gdTrueColorGetBlue 
-    integer(c_int) :: c
-    gdTrueColorGetBlue = ishft(iand(c, z'000000FF'), 8_c_int)
-  end function gdTrueColorGetBlue
-  
+
   function gdTrueColorGetGreen(c)
     implicit none
     integer(c_int):: gdTrueColorGetGreen 
     integer(c_int) :: c
-    gdTrueColorGetGreen = ishft(iand(c, z'0000FF00'), 8_c_int)
+    gdTrueColorGetGreen = ishft(iand(c, z'0000FF00'), -8_c_int)
   end function gdTrueColorGetGreen
-  
+    
+  function gdTrueColorGetBlue(c)
+    implicit none
+    integer(c_int):: gdTrueColorGetBlue 
+    integer(c_int) :: c
+    gdTrueColorGetBlue = ishft(iand(c, z'000000FF'), 0_c_int)
+  end function gdTrueColorGetBlue
+
+  subroutine gdReadIntArrayFromIm(im, intArray, w, h)
+    implicit none
+    ! 1-st dimenstion: color channel (1=red, 2= green, 3= blue, values from 1 to 255)
+    ! 2-nd dimenstion: column (starting with 0)
+    ! 3-rd dimension:  line(starting with 1) 
+    
+    integer(c_int) :: IntArray(1:3,0:w-1,0:h-1)
+    type(c_ptr), value :: im
+    integer(c_int), value:: w, h
+    integer:: x_counter, y_counter, pixelvalue
+
+    intArray = 0
+
+    do y_counter= 0,h-1
+       do x_counter=0,w-1
+          pixelvalue = gdImageGetTrueColorPixel(im,x_counter, y_counter)
+          IntArray(1,x_counter, y_counter) = gdTrueColorGetRed(pixelvalue)
+          IntArray(2,x_counter, y_counter) = gdTrueColorGetGreen(pixelvalue)
+          IntArray(3,x_counter, y_counter) = gdTrueColorGetBlue(pixelvalue)
+       enddo
+    enddo   
+  end subroutine gdReadIntArrayFromIm
+
+  subroutine gdWriteImFromIntArray(im, IntArray, w, h)
+    implicit none
+    type(c_ptr), value:: im
+    integer(c_int):: IntArray(1:3, 0:w-1, 0:h-1)
+    integer(c_int), value:: w, h  
+    integer:: x_counter, y_counter, current_color
+
+    do y_counter=0,h-1
+       do x_counter=0,w-1
+          current_color = gdImageColorAllocate(im,&
+                                               IntArray(1,x_counter, y_counter),&
+                                               IntArray(2,x_counter, y_counter),&
+                                               IntArray(3,x_counter, y_counter))
+          call gdImageSetPixel(im,x_counter, y_counter, current_color)
+       enddo
+    enddo
+  end subroutine gdWriteImFromIntArray
+
+
 end module fortran_libgd
 
 
