@@ -141,8 +141,6 @@ Here the pipe for the output, where FFMPEG  reconferts the RAW output stream int
 not be explained here. Instaed I refer to Ted Burke's blog or the - for variations - to the original
 FFMPEG documentation.
 
-```fortran     
-=======
 ```fortran  
   outpipe = gd_popen("ffmpeg -y -f rawvideo"//&
        " -vcodec rawvideo -pix_fmt rgb24 -s 320x240 -r 25 -i -"//&
