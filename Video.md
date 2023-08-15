@@ -87,7 +87,7 @@ leads to a more convenient way to manipulate the data.
 
 ```r```, ```g``` and ```b``` store the values for the red, green, and blue color channel.
 
-```fortran```
+```fortran
   integer:: frame_counter = 1
 ```
 
