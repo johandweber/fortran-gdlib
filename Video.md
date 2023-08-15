@@ -41,3 +41,36 @@ a C library.
 ```
 Here we define the width ```w``` and the height ```h``` of the video in pixels.
 
+```fortran
+  integer(c_int)    :: return_code
+  integer(c_size_t) :: count
+```
+Helper variables that will be explained below.
+
+```fortran
+  type(c_ptr) :: im, inpipe, outpipe
+```
+Pointers for the GD Image Handle ```ìm``` and the file pointers for the
+input and output pipes.
+
+```fortran
+  integer(c_int8_t) :: pipematrix(1:3, 0:w-1, 0:h-1)
+  integer(c_int8_t) :: pipematrix_linear(3*w*h)
+  integer(c_int)    :: workmatrix(1:3, 0:w-1, 0:h-1)
+```
+Arrays that  represent different stages of the pre-processing of the input data.
+The video data data are first read (in steps reprenting a single image frame) 
+from the pipe into the array ```pipematrix_linear````,
+which consists of 8-bit integer values representing the red, green and blue values of
+one image frame.
+
+These data are then reshaped into the 3-dimensional array pipematrix, where the first
+dimension represents the color channel (1 = red, 2 = green, 3 = blue) the width and the 
+height. Note that the arrays for the width and the height start with 0 instead of 1.
+The reason is consistency with the C implementation.
+Note that Fortran does not support unsigned integers. SO the color range 0...255 is mapped to
+-128...127 using two's complement.
+
+The array ```ẁorkmatrix````has the same shape as ```pipematrix``` but stores the values in 
+32-bit integer numbers. (The color-values are remapped to the range 0...255).
+
