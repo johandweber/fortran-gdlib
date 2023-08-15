@@ -39,5 +39,5 @@ a C library.
   integer(c_int), parameter:: w = 320_c_int
   integer(c_int), parameter:: h = 240_c_int
 ```
-Here we define the width ```w````and the height ```h``` of the video in pixels.
+Here we define the width ```w``` and the height ```h``` of the video in pixels.
 
