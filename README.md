@@ -254,7 +254,7 @@ Animation of an image that is rotated
 ![Animation](sample_images/animation.gif)
 
 ### Video Manipulation
-Using ![FFMPG](https://www.ffmpeg.org/) it is also also possible to use GDlib - and
+Using [FFMPG](https://www.ffmpeg.org/) it is also also possible to use GDlib - and
 consequently fortran-gdlib - to manipulate videos .
 
 To do so a pipe from (for input) and another pipe to ffmpeg are created.
@@ -269,9 +269,9 @@ An detailed explanation on the basis of a test program is given in in a
 ![here](Video.md).
 
 The method described there is based on a 
-excellent ![blog entry](https://batchloaf.wordpress.com/2017/02/12/a-simple-way-to-read-and-write-audio-and-video-files-in-c-using-ffmpeg-part-2-video/) 
+excellent [blog entry](https://batchloaf.wordpress.com/2017/02/12/a-simple-way-to-read-and-write-audio-and-video-files-in-c-using-ffmpeg-part-2-video/) 
 by Ted Burke which in turn was inspired by
-a ![Python solution](http://zulko.github.io/blog/2013/09/27/read-and-write-video-frames-in-python-using-ffmpeg/) by Zulko.
+a [Python solution](http://zulko.github.io/blog/2013/09/27/read-and-write-video-frames-in-python-using-ffmpeg/) by Zulko.
 
 While Ted Burke was so kind to give me permission to use his Code as a template for my Fortran example,
 all bugs are purely my own...
