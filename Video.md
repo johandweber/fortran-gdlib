@@ -95,7 +95,7 @@ leads to a more convenient way to manipulate the data.
 
 ```fortran
   integer(c_int), dimension(0:7) ::imagerect
-  imagerect=[0,0,319,0,319,239,0,239] 
+  imagerect=[0,0,319,0,319,239,0,239]  
 ```
 The array ```imagerect``` defines the relevant window for the font output.
 In this case this corresponds to the entire image.
