@@ -231,7 +231,7 @@ Now the pixel values of ```im``` are written back into the array ```workmatrix``
      frame_counter = frame_counter+1
    enddo
 ```
-In the subroutine ```gdIntArrayToUInt8Array)  array ```workmatrix``` is transferred into the array ```pipematrix```, where each color value is represented by a 8-bit integer value (using two's compliment, so althoug the data type is signed, the
+In the subroutine ```gdIntArrayToUInt8Array```  the array ```workmatrix``` is transferred into the array ```pipematrix```, where each color value is represented by a 8-bit integer value (using two's compliment, so althoug the data type is signed, the
 bit pattern corresponds to the one of a 8-bit unsigned values whose number equals the 32bit integer value of the array
 ```workmatrix```).
 
@@ -245,7 +245,10 @@ The frame counter is now increaed by one and the loop starts again.
   return_code = gd_pclose(inpipe)
   return_code = gd_fflush(outpipe)
   return_code = gd_pclose(outpipe)
+
+end program test_pipes
 ```
+
 Finally the pipes are flushed and closed.
 *Note:* It is important to use the C-wrappers ```gd_fflush``` and ```gd_pclose``` 
 instead of similar Fortran commands/functions, because the C library GD-lib requires a C-style file handling. 
