@@ -106,7 +106,7 @@ In this case this corresponds to the entire image.
   yellow = gdImageColorAllocate(im, 255_c_int, 255_c_int, 0_c_int)
 ```
 Here an image handler that will store the frames (with with ```w``` and height ```h```) 
-is saved in the variable im.
+is saved in the variable ```im```.
 Furthermore the variable ```yellow``` is defined as the rgb-vlaues of the color yellow.
 
 ```fortran
