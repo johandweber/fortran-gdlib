@@ -27,7 +27,17 @@ Now let's look at the example program step by step.
 ```fortran
 program test_pipes
   use, intrinsic:: iso_c_binding
-  use, intrinsic:: iso_fortran_env
   use fortran_libgd
   implicit none
 ```
+
+Besides the libgd module '''fortran_libgd''' we also use the intrinsic module
+```iso_c_binding``` to make sure our data types are compatible with LibGD, which is
+a C library.
+
+```fortran
+  integer(c_int), parameter:: w = 320_c_int
+  integer(c_int), parameter:: h = 240_c_int
+```
+Here we define the width ```w````and the height ```h``` of the video in pixels.
+
