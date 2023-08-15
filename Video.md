@@ -140,3 +140,83 @@ Here the pipe for the output, where FFMPEG  reconferts the RAW output stream int
 *Note:* I am not an expert in the usage of FFMPEG. So the details of the command-line options will
 not be explained here. Instaed I refer to Ted Burke's blog or the - for variations - to the original
 FFMPEG documentation.
+
+```fortran     
+     do y_counter=0,gdImageSy(im)-1
+        do x_counter=0,gdImageSx(im)-1
+           
+           r =  workmatrix(1, x_counter, y_counter)
+           g =  workmatrix(2, x_counter, y_counter)
+           b =  workmatrix(3, x_counter, y_counter)
+              
+           workmatrix(1, x_counter, y_counter) =  b
+           workmatrix(2, x_counter, y_counter) =  r
+           workmatrix(3, x_counter, y_counter) =  g
+              
+        end do
+     end do
+```
+Here the blue value of the input pipe is mapped to the red value of the output pipe,
+the red value of the input pipe to the green value of the output pipe,
+and the green channel of the input pipe to the blue value of the output pipe. 
+Note that these operations are not implemented using GDlib, but are pure per-pixel
+manipulations.
+
+```fortran
+     call gdWriteImFromIntArray(im, workmatrix, w, h)
+```
+Here the pixel values from ```workmatrix``` are read into the structure referenced by the pointer
+```im``` using the subroutine ```call gdWriteImFromIntArray```. Additionaly, the width and the 
+height of the image frame have to be provided.
+
+```fortran
+     call gdImageStringFT(im, imagerect, yellow,"/usr/share/fonts/opentype/freefont/FreeSans.otf"//c_null_char , &
+          16._c_double, 0._c_double ,10,20,"Fortran TV"//c_null_char)
+     call gdImageSetThickness(im, 3)
+     call gdImageLine(im, 0, 120, 319, 120, yellow)
+     call gdimageLine(im, 160, 0, 160, 239, yellow)
+```
+Here  the String "Fortran TV" and a cross with Line width 3 are added to each image frame. In this example
+the manipulation is the same for each frame, but it is also possible to change the manipulation from 
+frame to frame.
+
+```fortran
+     call gdReadIntArrayFromIm(im, workmatrix, w, h)
+```
+Now the pixel values of ```im``` are written back into the array ```workmatrix```. 
+
+```fortran
+     write(*,*) 'Workmatrix(1,0,0) :', workmatrix(1,0,0)
+     call gdIntArrayToUInt8Array(workmatrix,pipematrix,w,h)
+
+     count= gd_fwrite_rawdata_matrix(pipematrix,w,h, outpipe)
+     write(*,*) "Count = ",count
+     if (count .ne. 3*w*h) then
+        write(*,*) 'Could not write in pipe'
+        stop
+     endif
+     write(*,*) 'Frame #', frame_counter
+     frame_counter = frame_counter+1
+   enddo
+```
+In the subroutine ```gdIntArrayToUInt8Array)  array ```workmatrix``` is transferred into the array ```pipematrix```, where each color value is represented by a 8-bit integer value (using two's compliment, so althoug the data type is signed, the
+bit pattern corresponds to the one of a 8-bit unsigned values whose number equals the 32bit integer value of the array
+```workmatrix```).
+
+The function ```gd_fwrite_rawdata_matrix``` writes the array ```pipematrix``` to the output pipe and returns the
+number of written bytes. If the value differs from the expected value of three times the width in pixels times the
+height in pixels, the program terminates with an error message.
+The frame counter is now increaed by one and the loop starts again.
+
+```fortran
+  return_code = gd_fflush(inpipe)
+  return_code = gd_pclose(inpipe)
+  return_code = gd_fflush(outpipe)
+  return_code = gd_pclose(outpipe)
+```
+Finally the pipes are flushed and closed.
+*Note:* It is important to use the C-wrappers ```gd_fflush``` and ```gd_pclose``` 
+instead of similar Fortran commands/functions, because the C library GD-lib requires a C-style file handling. 
+
+
+
