@@ -13,6 +13,7 @@ Fortran binding for the GD graphics library [https://libgd.github.io/](https://l
   - [Font Handling](#font-handling)
   - [Image Processing](#image-processing)
   - [Animation](#animation)
+* [Video Manipulation]
 
 <a name="requirements"></a>
 ## Requirements
@@ -254,7 +255,7 @@ Animation of an image that is rotated
 ![Animation](sample_images/animation.gif)
 
 ### Video Manipulation
-Using [FFMPG](https://www.ffmpeg.org/) it is also also possible to use GDlib - and
+Using [FFMPG](https://www.ffmpeg.org/) it is also possible to use GDlib - and
 consequently fortran-gdlib - to manipulate videos .
 
 To do so a pipe from (for input) and another pipe to ffmpeg are created.
