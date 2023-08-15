@@ -7,7 +7,7 @@ To do so a pipe from (for input) and another pipe to ffmpeg are created.
 The advantage of this approach is that the internals of the codecs do not 
 have to be known to the program acting as "filter", if the ffmpeg takes care of the the
 conversion of the input data into raw data that can be handled
-by the 'filter'. After the manipulation is done, ffmpe3g re-encode the raw output.
+by the 'filter'. After the manipulation is done, FFMPEG re-encodes the raw output.
 
 Of course, it is also possible to use ffmpeg only for the input of data.
 
@@ -117,7 +117,26 @@ Furthermore the variable ```yellow``` is defined as the rgb-vlaues of the color 
        stop 'Could not open input pipe. Is ffmpeg in your executable path?'
 
 ```
+```gf_popen```is a wrapper aroung the C ```popen```(Unix-like systems) or ```_popen``` (Windows)
+function to open pipes.
+
 Here the input pipe is defined. Here FFMPEG takes the MP4 file inpics/swans.mp3 and converts
 it into a uncompressed raw stream where each pixel is described by one byte for the red, green and
 blue channel respectively.
 
+If opening the pipe is not successful, the program stops with an error message.
+
+```fortran
+  outpipe = gd_popen("ffmpeg -y -f rawvideo"//&
+       " -vcodec rawvideo -pix_fmt rgb24 -s 320x240 -r 25 -i -"//&
+       " -f mp4 -q:v 5 -an -vcodec mpeg4 outpics/purplewater.mp4"//c_null_char, "w"//c_null_char)
+
+  if ( .not. c_associated(outpipe) ) &
+      stop 'Could not open outpup pipe. Is ffmpeg in your executable path?'
+```
+Here the pipe for the output, where FFMPEG  reconferts the RAW output stream into the MP4 file
+```outpics/purplewater```.
+
+*Note:* I am not an expert in the usage of FFMPEG. So the details of the command-line options will
+not be explained here. Instaed I refer to Ted Burke's blog or the - for variations - to the original
+FFMPEG documentation.
