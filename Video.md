@@ -140,3 +140,53 @@ Here the pipe for the output, where FFMPEG  reconferts the RAW output stream int
 *Note:* I am not an expert in the usage of FFMPEG. So the details of the command-line options will
 not be explained here. Instaed I refer to Ted Burke's blog or the - for variations - to the original
 FFMPEG documentation.
+
+```fortran  
+  outpipe = gd_popen("ffmpeg -y -f rawvideo"//&
+       " -vcodec rawvideo -pix_fmt rgb24 -s 320x240 -r 25 -i -"//&
+       " -f mp4 -q:v 5 -an -vcodec mpeg4 outpics/purplewater.mp4"//c_null_char, "w"//c_null_char)
+
+  if ( .not. c_associated(outpipe) ) &
+      stop 'Could not open outpup pipe. Is ffmpeg in your executable path?'
+```
+Definition of the output pipe.
+
+```fortran
+  print*, "start loop"
+  do while(.true.)
+     count = gd_fread_rawdata_matrix(pipematrix_linear,w,h,inpipe)
+     if (count .ne. 3*w*h)&
+          exit
+     print*
+```
+Not the loop over the image frames is started. It is realized as an endless loop.
+The function ```gd_fread_rawdata_matrix``` reads from the input pipe and saves 
+the data into the array ```pipematrix_linear```. It returns the number of bytes read.
+If the result differs from ```3*w*h```, this means that the pipe is fully read
+and the loop can be left using the ```exit````command.
+
+```fortran
+    pipematrix = reshape(pipematrix_linear,(/3,w,h/));
+    call gdUInt8ArrayToIntArray(pipematrix, workmatrix, w, h)
+```
+Now the previously described arrays ```pipematrix``` and ```workmatrix``` are filled.
+ 
+```fortran
+     do y_counter=0,gdImageSy(im)-1
+        do x_counter=0,gdImageSx(im)-1
+           
+           r =  workmatrix(1, x_counter, y_counter)
+           g =  workmatrix(2, x_counter, y_counter)
+           b =  workmatrix(3, x_counter, y_counter)
+              
+           workmatrix(1, x_counter, y_counter) =  b
+           workmatrix(2, x_counter, y_counter) =  r
+           workmatrix(3, x_counter, y_counter) =  g
+              
+        end do
+     end do
+```
+Here for each pixel the value of the red channel of the output file is set to the 
+value of the blue channel of the input value, the green output channel to the red input
+channel and the blue output channel to the green input channel.
+
