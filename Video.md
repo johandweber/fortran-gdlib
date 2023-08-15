@@ -1,4 +1,4 @@
-#Video manipulation using FFMPEG and fortran-gdlib
+# Video manipulation using FFMPEG and fortran-gdlib
 
 Using [FFMPG](https://www.ffmpeg.org/) it is also possible to use GDlib - and
 consequently fortran-gdlib - to manipulate videos .
@@ -71,6 +71,52 @@ The reason is consistency with the C implementation.
 Note that Fortran does not support unsigned integers. SO the color range 0...255 is mapped to
 -128...127 using two's complement.
 
-The array ```ẁorkmatrix````has the same shape as ```pipematrix``` but stores the values in 
+The array ```ẁorkmatrix``` has the same shape as ```pipematrix``` but stores the values in 
 32-bit integer numbers. (The color-values are remapped to the range 0...255).
+This requires additional memory, but being able to store positive numbers between 0 ands 255
+leads to a more convenient way to manipulate the data.
+
+```fortran
+  integer(c_int)   :: x_counter, y_counter
+  integer(c_int)   :: yellow
+  integer(c_int)   :: r, g, b
+```
+
+```x_counter``` and ```y_counter``` are counters for the pixel in ```x```- and ```y```-direction.
+```yellow``` stores the color value for yellow
+````r```, ```g``` and ```b````store the values fpor the red, green, and blue color channel
+
+```fortran```
+  integer:: frame_counter = 1
+```
+
+```frame_counter``` is a counter variable for the image frames
+
+```fortran
+  integer(c_int), dimension(0:7) ::imagerect
+  imagerect=[0,0,319,0,319,239,0,239]
+```
+The array ```imagerect``` defines the relevant window for the font output.
+In this case this corresponds to the entire image.
+
+```fortran
+  im = gdImageCreateTrueColor(w, h)
+
+  yellow = gdImageColorAllocate(im, 255_c_int, 255_c_int, 0_c_int)
+```
+Here an image handler that will store the frames (with with ```w``` and height ```h```) 
+is saved in the variable im.
+Furthermore the variable ```yellow``` is defined as the rgb-vlaues of the color yellow.
+
+```fortran
+  inpipe = gd_popen("ffmpeg -i inpics/swans.mp4 -f image2pipe"//&
+       " -vcodec rawvideo -pix_fmt rgb24 -"//c_null_char, "r"//c_null_char)
+
+  if ( .not. c_associated(inpipe) ) &
+       stop 'Could not open input pipe. Is ffmpeg in your executable path?'
+
+```
+Here the input pipe is defined. Here FFMPEG takes the MP4 file inpics/swans.mp3 and converts
+it into a uncompressed raw stream where each pixel is described by one byte for the red, green and
+blue channel respectively.
 
