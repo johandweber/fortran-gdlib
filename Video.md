@@ -84,7 +84,7 @@ leads to a more convenient way to manipulate the data.
 
 ```x_counter``` and ```y_counter``` are counters for the pixel in ```x```- and ```y```-direction.
 ```yellow``` stores the color value for yellow
-````r```, ```g``` and ```b````store the values fpor the red, green, and blue color channel
+```r```, ```g``` and ```b``` store the values fpor the red, green, and blue color channel
 
 ```fortran```
   integer:: frame_counter = 1
