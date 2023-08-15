@@ -206,7 +206,7 @@ height of the image frame have to be provided.
      call gdImageLine(im, 0, 120, 319, 120, yellow)
      call gdimageLine(im, 160, 0, 160, 239, yellow)
 ```
-Here  the String "Fortran TV" and a cross with Line width 3 are added to each image frame. In this example
+Here  the String "Fortran TV" and a cross with line width 3 are added to each image frame. In this example
 the manipulation is the same for each frame, but it is also possible to change the manipulation from 
 frame to frame.
 
