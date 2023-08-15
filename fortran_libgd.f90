@@ -158,12 +158,43 @@ module fortran_libgd
           type(c_ptr), value :: stream
         end function gd_fflush
 
-        function gd_popen(stream)&
+        function gd_popen(streamname, modus)&
              bind(c, name = 'wrap_popen')
-          import c_ptr, c_int
-          integer(c_int):: gd_popen
-          type(c_ptr), value :: stream
+          import c_ptr, c_char
+          implicit none
+          type(c_ptr):: gd_popen
+          character(kind= c_char),   intent(in) :: streamname(*), modus(*)           
         end function gd_popen
+
+        function gd_pclose(pipe)&
+             bind(c, name = 'pclose')
+          import c_ptr, c_int
+          implicit none
+          integer(c_int):: gd_pclose
+          type(c_ptr), value:: pipe
+        end function gd_pclose
+
+        function gd_fwrite_rawdata_matrix(data, w,h , stream)&
+             bind(c, name= 'gd_fwrite_rawdata_matrix')
+          import c_size_t, c_ptr, c_int, c_int8_t
+          implicit none
+          integer(c_size_t):: gd_fwrite_rawdata_matrix
+          integer(c_int), value :: w, h
+          integer(c_int8_t):: data(*)
+          type(c_ptr), value:: stream
+        end function gd_fwrite_rawdata_matrix
+
+ 
+        function gd_fread_rawdata_matrix(data, w,h , stream)&
+             bind(c, name= 'gd_fread_rawdata_matrix')
+          import c_size_t, c_ptr, c_int8_t, c_int
+          implicit none
+          integer(c_size_t):: gd_fread_rawdata_matrix
+          integer(c_int), value :: w, h        
+          integer(c_int8_t):: data(*)
+          type(c_ptr), value:: stream
+        end function gd_fread_rawdata_matrix
+       
  !==============================================================================
         
         
@@ -1336,7 +1367,7 @@ contains
     ! 2-nd dimenstion: column (starting with 0)
     ! 3-rd dimension:  line(starting with 1) 
     
-    integer(c_int) :: IntArray(1:3,0:w-1,0:h-1)
+    integer(c_int):: IntArray(1:3,0:w-1,0:h-1)
     type(c_ptr), value :: im
     integer(c_int), value:: w, h
     integer:: x_counter, y_counter, pixelvalue
@@ -1371,6 +1402,58 @@ contains
     enddo
   end subroutine gdWriteImFromIntArray
 
+
+! A bit complicated, because Fortran does not support unsigned integers 
+! this code only works, if the two's complement is used
+  subroutine gdIntArrayToUInt8Array(IntArray, Uint8Array, w, h) 
+    implicit none
+    integer(c_int):: w, h
+    integer(c_int):: IntArray(1:3,0:w-1,0:h-1)
+    integer(c_int8_t):: UInt8Array(1:3,0:w-1,0:h-1)
+    integer(c_int):: channel_counter, x_counter, y_counter
+
+    do y_counter= 0, h-1
+       do x_counter=0, w-1
+          do channel_counter=1,3
+             if ( IntArray(channel_counter, x_counter, y_counter) <= 127) then
+                UInt8Array(channel_counter, x_counter, y_counter) = &
+                     int(IntArray(channel_counter, x_counter, y_counter), kind=c_int8_t)
+             else
+                UInt8Array(channel_counter, x_counter, y_counter) = &
+                     +int(-256_c_int+IntArray(channel_counter, x_counter, y_counter), kind=c_int8_t) 
+             endif
+          enddo
+       enddo
+    enddo
+    
+  end subroutine gdIntArrayToUint8Array
+
+
+! A bit complicated, because Fortran does not support unsigned integers 
+! this code only works, if the two's complement is used
+  subroutine gdUInt8ArrayToIntArray(Uint8Array, IntArray, w, h) 
+    implicit none
+    integer(c_int):: w, h
+    integer(c_int):: IntArray(1:3, 0:w-1, 0:h-1)
+    integer(c_int8_t):: UInt8Array(1:3, 0:w-1, 0:h-1)
+    integer(c_int):: x_counter, y_counter, channel_counter
+
+    do y_counter= 0, h-1
+       do x_counter=0, w-1
+          do channel_counter=1,3
+             if ( IntArray(channel_counter, x_counter, y_counter) < 0) then
+                IntArray(channel_counter, x_counter, y_counter) = &
+                     int(UInt8Array(channel_counter, x_counter, y_counter), kind=c_int)
+             else
+                IntArray(channel_counter, x_counter, y_counter) = &
+                     256_c_int+int(UInt8Array(channel_counter, x_counter, y_counter), kind=c_int)               
+             endif
+          enddo
+       enddo
+    enddo
+    
+  end subroutine  gdUInt8ArrayToIntArray
+  
 
 end module fortran_libgd
 

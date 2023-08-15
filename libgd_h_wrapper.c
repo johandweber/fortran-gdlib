@@ -1,5 +1,6 @@
 #include<gd.h>
 #include<stdio.h>
+#include<stdlib.h>
 
 /* Functions that wrap the accessor macros so nthat they can be interaced from
    Fortran */
@@ -71,5 +72,12 @@ FILE* wrap_popen(const char *command, const char *type){
   return myfile;
 }
     
-  
+size_t gd_fread_rawdata_matrix(unsigned char * data, int w, int h, FILE* stream)
+{
+  return fread(data,(size_t) 1,  (size_t) w*h*3, stream);
+}
 
+size_t gd_fwrite_rawdata_matrix(unsigned char * data, int w, int h, FILE* stream)
+{
+  return fwrite(data,(size_t) 1,  (size_t) w*h*3, stream);
+}
